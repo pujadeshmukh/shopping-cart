@@ -9,7 +9,37 @@
 plugins {
     // Apply the application plugin to add support for building a CLI application in Java.
     id 'application'
+    id 'jacoco'
 }
+jacoco { //Please do not change this
+    toolVersion = "0.8.8"
+    reportsDir = file("$buildDir/jacoco")
+}
+
+jacocoTestReport { //Please do not change this
+
+    dependsOn test
+
+    afterEvaluate {
+        classDirectories.setFrom(files(classDirectories.files.collect {
+            fileTree(dir: it, exclude: ["*/java/shoppingcart/Constants.java",
+                                        "shoppingcart/Constants.java","**/Constants.java"]);
+
+
+        }))
+    }
+    reports {
+        xml.enabled false
+        csv.enabled false
+        html.enabled true
+        html.destination file("./jacoco1.html")
+    }
+
+}
+test {
+    finalizedBy jacocoTestReport // report is always generated after tests run
+}
+
 
 repositories {
     // Use Maven Central for resolving dependencies.
@@ -29,7 +59,7 @@ dependencies {
 
 application {
     // Define the main class for the application.
-    mainClass = 'shoppingcart.App'
+    mainClass = 'ShoppingCartApp'
 }
 
 tasks.named('test') {

@@ -9,6 +9,6 @@ public class ShoppingCartTest {
     void emptyCartTest() {
         var cart = new ShoppingCart();
 
-        assertEquals(0.0d, cart.totalPrice());
+        assertEquals(0.0d, cart.getTotalBill());
     }
 }
